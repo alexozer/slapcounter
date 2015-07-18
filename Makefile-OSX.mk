@@ -56,9 +56,9 @@ CXXFLAGS_STD      = -std=gnu++11
 CXXFLAGS         = -pedantic -Wall -Wextra
 
 ### If avr-gcc -v is higher than 4.9, activate coloring of the output
-ifeq "$(AVR_GCC_VERSION)" "1"
-    CXXFLAGS += -fdiagnostics-color
-endif
+#ifeq "$(AVR_GCC_VERSION)" "1"
+    #CXXFLAGS += -fdiagnostics-color
+#endif
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
