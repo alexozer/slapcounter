@@ -65,14 +65,12 @@ $ cd slapcounter
 $ git submodule update --init --recursive
 ```
 
-### Test that evrything is up and running
-
-To make sure you're up and running to hack Arduino, we are going to compile some code.
+### Compile and upload code to your sLap Counter
 
 Copy the appropriate Makefile to your project dir:
 
 ```Bash
-1 if you are on OS X
+# if you are on OS X
 $ cp Makefile-OSX.mk ./Makefile
 
 # or if you're running Linux
@@ -83,7 +81,7 @@ Then replace the PROJECT_DIR variable in the Makefile with the path of the proje
 This can be obtained by running:
 
 ```Bash
-pwd
+$ pwd
 ```
 
 Then compile and upload your code to the sLap Counter:
