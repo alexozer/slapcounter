@@ -5,7 +5,7 @@
 
 ### PROJECT_DIR
 ### This is the path to where you have created/cloned your project
-PROJECT_DIR       = /Users/{{ YOUR USERNAME }}/path/to/MyAwesomeProject
+PROJECT_DIR       = {{ replace everything after the = with your path }}
 
 ### AVR_GCC_VERSION
 ### Check if the version is equal or higher than 4.9
@@ -30,8 +30,7 @@ USER_LIB_PATH     :=  $(realpath $(PROJECT_DIR)/lib)
 ### It must be set to the board you are currently using. (i.e uno, mega, etc.)
 ### For the Arduino Uno, only BOARD_TAG is mandatory and BOARD_SUB can be equal to anything
 ### For the Arduino Mega2560, BOARD_SUB is also needed
-BOARD_TAG         = mega
-BOARD_SUB         = atmega2560
+BOARD_TAG         = teensy31
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.
@@ -70,5 +69,5 @@ CURRENT_DIR       = $(shell basename $(CURDIR))
 OBJDIR            = $(PROJECT_DIR)/bin/$(CURRENT_DIR)/$(BOARD_TAG)
 
 ### path to Arduino.mk, inside the ARDMK_DIR, don't touch.
-include $(ARDMK_DIR)/Arduino.mk
+include $(ARDMK_DIR)/Teensy.mk
 
