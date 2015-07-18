@@ -3,7 +3,7 @@
 
 const rgb24 blankColor = {0, 0, 0};
 
-Blinky::Blinky(Scheduler* s, uint16_t x, uint16_t y, uint16_t size, const rgb24& color, unsigned long togglePeriod): sched{s}, x{x}, y{y}, size{size}, togglePeriod{togglePeriod}, state{false}, toggleTaskID{-1}, coloringTaskID{-1} {
+Blinky::Blinky(Scheduler* s, uint16_t x, uint16_t y, uint16_t size, const rgb24& color, unsigned long togglePeriod): sched{s}, x{x}, y{y}, size{size}, togglePeriod{togglePeriod}, state{false}, toggleTaskID{0}, coloringTaskID{0} {
 	col = color;
 	toggleTaskID = sched->setInterval(this, togglePeriod);
 }
@@ -12,7 +12,7 @@ void Blinky::setColoring(bool coloring) {
 	if(coloring) {
 		coloringTaskID = sched->setInterval(this, 5);
 	} else {
-		sched->removeTask(coloringTaskID);
+		sched->clearInterval(coloringTaskID);
 	}
 }
 
@@ -31,6 +31,6 @@ void Blinky::draw(SmartMatrix& matrix) {
 }
 
 Blinky::~Blinky() {
-	sched->removeTask(toggleTaskID);
-	sched->removeTask(coloringTaskID);
+	sched->clearInterval(toggleTaskID);
+	sched->clearInterval(coloringTaskID);
 }

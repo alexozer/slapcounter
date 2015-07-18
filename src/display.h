@@ -13,7 +13,7 @@ class Display : public Component {
 		void update(unsigned taskID) override;
 		void addDrawing(Drawing* d);
 		void removeDrawing(Drawing* d);
-		~Display() { sched->removeTask(drawTaskID); }
+		~Display() { sched->clearInterval(drawTaskID); }
 
 	private:
 		SmartMatrix mat;

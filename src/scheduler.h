@@ -9,7 +9,7 @@
 class Scheduler {
 	public:
 		unsigned setInterval(Component* c, unsigned long interval); // returns task id
-		void removeTask(unsigned id);
+		void clearInterval(unsigned id);
 		void iterate();
 		void reset();
 

@@ -3,7 +3,7 @@
 
 #include "task.h"
 
-unsigned Task::nextID = 0;
+unsigned Task::nextID = 1; // 0 is reserved as null
 std::vector<unsigned> Task::oldIDs;
 
 Task::Task(Component* compon, unsigned long interval)

@@ -11,7 +11,7 @@ unsigned Scheduler::setInterval(Component* c, unsigned long interval) {
 	return tasks.back().getID();
 }
 
-void Scheduler::removeTask(unsigned id) {
+void Scheduler::clearInterval(unsigned id) {
 	auto it = tasks.begin();
 	while(it != tasks.end()) {
 		if(it->getID() == id) break;
