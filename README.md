@@ -87,5 +87,13 @@ $ pwd
 Then compile and upload your code to the sLap Counter:
 
 ```Bash
+$ cd src
+$ make upload
+```
+
+### Updating sLap Counter software
+
+```Bash
+$ git pull
 $ make upload
 ```
