@@ -1,3 +1,6 @@
 [submodule "Arduino-Makefile"]
 	path = Arduino-Makefile
 	url = git://github.com/WeAreLeka/Arduino-Makefile
+[submodule "lib/SmartMatrix"]
+	path = lib/SmartMatrix
+	url = git@github.com:pixelmatix/SmartMatrix.git
