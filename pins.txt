@@ -1,0 +1,12 @@
+Buttons:
+Top: 11
+Middle: 12
+Bottom: 15
+
+Bluefruit LE:
+SCK: 19
+MISO: 18
+MOSI: 17
+REQ: 16
+RDY: 27
+RST: 28
