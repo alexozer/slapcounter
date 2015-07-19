@@ -17,7 +17,7 @@ class Bluetooth : public Component, public Drawing {
 			disp->addDrawing(this);
 		};
 		void setMode(Mode m);
-		void update(unsigned taskID) override;
+		void update(unsigned) override;
 		void draw(SmartMatrix& matrix) override;
 		~Bluetooth() { disp->removeDrawing(this); }
 

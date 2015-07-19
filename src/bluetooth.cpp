@@ -41,7 +41,7 @@ void Bluetooth::setMode(Mode m) {
 	}
 }
 
-void Bluetooth::update(unsigned taskID) {
+void Bluetooth::update(unsigned) {
 	if(mode != Mode::connecting) return;
 
 	sched->setTimeout(this, animTimeouts[currAnimFrame++]);
@@ -67,7 +67,7 @@ void Bluetooth::draw(SmartMatrix& matrix) {
 			if(currAnimFrame < statusLength) {
 				matrix.drawPixel(currAnimFrame, 0, statusColor);
 			} else {
-				matrix.drawPixel(statusLength - (currAnimFrame - statusLength) - 1);
+				matrix.drawPixel(statusLength - (currAnimFrame - statusLength) - 1, 0, statusColor);
 			}
 			break;
 	}
