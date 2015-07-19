@@ -9,12 +9,15 @@
 class Scheduler {
 	public:
 		unsigned setInterval(Component* c, unsigned long interval); // returns task id
+		unsigned setTimeout(Component* c, unsigned long timeout);
 		void clearInterval(unsigned id);
 		void iterate();
 		void reset();
 
 	private:
 		std::vector<Task> tasks;
+
+		unsigned addTask(Component* c, unsigned long time, bool oneshot);
 };
 
 #endif

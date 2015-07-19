@@ -7,12 +7,13 @@
 
 class Task {
 	public:
-		Task(Component* compon, unsigned long interval);
+		Task(Component* compon, unsigned long interval, bool oneshot);
 
 		bool isReady() const {return millis() - lastMillis >= interval; }
 		void run();
 		unsigned getID() const { return id; }
 		void reset() {lastMillis = millis(); }
+		bool isOneshot() const { return oneshot; }
 
 		~Task() {oldIDs.push_back(id);}
 
@@ -23,6 +24,7 @@ class Task {
 		Component* c;
 
 		unsigned long interval;
+		bool oneshot;
 		unsigned long lastMillis;
 
 		static unsigned nextID;

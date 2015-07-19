@@ -6,9 +6,8 @@
 unsigned Task::nextID = 1; // 0 is reserved as null
 std::vector<unsigned> Task::oldIDs;
 
-Task::Task(Component* compon, unsigned long interval)
-	:c{compon}, interval{interval}, lastMillis{millis()}
-{
+Task::Task(Component* compon, unsigned long interval, bool oneshot)
+	:c{compon}, interval{interval}, lastMillis{millis()}, oneshot{oneshot} {
 	if(oldIDs.size() == 0) {
 		id = nextID++;
 	} else {

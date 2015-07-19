@@ -6,7 +6,15 @@ using std::vector;
 #include "task.h"
 
 unsigned Scheduler::setInterval(Component* c, unsigned long interval) {
-	tasks.push_back(Task(c, interval));
+	return addTask(c, interval, false);
+}
+
+unsigned Scheduler::setTimeout(Component* c, unsigned long timeout) {
+	return addTask(c, timeout, true);
+}
+
+unsigned Scheduler::addTask(Component* c, unsigned long interval, bool oneshot) {
+	tasks.push_back(Task(c, interval, oneshot));
 
 	return tasks.back().getID();
 }
@@ -34,7 +42,14 @@ void Scheduler::iterate() {
 	}
 
 	for(auto &it : readyTaskIts) {
+		it->reset();
 		it->run();
+	}
+
+	for(auto metaIt = readyTaskIts.rbegin(); metaIt != readyTaskIts.rend(); ++metaIt) {
+		if((*metaIt)->isOneshot()) {
+			tasks.erase(*metaIt);
+		}
 	}
 
 	readyTaskIts.clear();
