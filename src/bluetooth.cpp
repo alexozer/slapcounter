@@ -1,6 +1,5 @@
 #include <vector>
 using std::vector;
-#include <cmath>
 
 #include "bluetooth.h"
 
@@ -12,14 +11,13 @@ const rgb24 blankColor = {0, 0, 0},
 vector<unsigned long> genAnimTimeouts(int statusLength, unsigned long period) {
 	vector<unsigned long> timeouts;
 
-	double lastTimeout = 0;
-	for(double x = 0; x != statusLength; ++x) {
-		double dt = std::acos(((x+1)/statusLength*2)-1)/(2*PI)*period;
+	for(double x = 0, lastTimeout = 0; x != statusLength; ++x) {
+		double dt = (asin(((x+1)/statusLength*2)-1)/(2*PI)+0.25)*period;
 		timeouts.push_back(dt-lastTimeout);
 		lastTimeout = dt;
 	}
 
-	double halfPeriod = period / 2;
+	const double halfPeriod = period / 2;
 	for(auto it = timeouts.crbegin(); it != timeouts.crend(); ++it) {
 		timeouts.push_back(*it + halfPeriod);
 	}
