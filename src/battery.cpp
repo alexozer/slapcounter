@@ -23,9 +23,9 @@ void Battery::update(unsigned intervalID) {
 	if(intervalID == checkIntervalID) {
 		// check battery level here
 
-		if(level <= 1) {
+		if(level <= 1 && redFadeID == 0) {
 			redFadeID = sched->setInterval(this, redFadeInterval);
-		} else {
+		} else if(level > 1 && redFadeID != 0) {
 			sched->clearInterval(redFadeID);
 			redFadeID = 0;
 		}
@@ -77,5 +77,6 @@ void Battery::setLevel(unsigned l) {
 
 Battery::~Battery() {
 	sched->clearInterval(checkIntervalID);
+	sched->clearInterval(redFadeID);
 	disp->removeDrawing(this);
 }
