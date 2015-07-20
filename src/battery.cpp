@@ -42,7 +42,7 @@ void Battery::updateRedShade() {
 			redFadeDirection = false;
 		}
 	} else {
-		if(redShade.red == red.red) {
+		if(redShade.red == dimRed.red) {
 			redFadeDirection = true;
 		}
 	}
