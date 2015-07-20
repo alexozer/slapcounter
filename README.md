@@ -71,10 +71,10 @@ Copy the appropriate Makefile to your project dir:
 
 ```Bash
 # if you are on OS X
-$ cp Makefile-OSX.mk ./Makefile
+$ cp Makefile-OSX.mk src/Makefile
 
 # or if you're running Linux
-$ cp Makefile-Linux.mk ./Makefile
+$ cp Makefile-Linux.mk src/Makefile
 ```
 
 Then replace the PROJECT_DIR variable in the Makefile with the path of the project.
