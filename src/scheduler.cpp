@@ -20,21 +20,14 @@ unsigned Scheduler::addTask(Component* c, unsigned long interval, bool oneshot) 
 }
 
 void Scheduler::clearInterval(unsigned id) {
-	auto it = tasks.begin();
-	while(it != tasks.end()) {
-		if(it->getID() == id) break;
-		++it;
-	}
-
-	if(it != tasks.end()) {
-		tasks.erase(it);
-	}
+	deadTaskIDs.push_back(id);
 }
 
 void Scheduler::iterate() {
-	static vector<vector<Task>::iterator> readyTaskIts;
+	cleanDeadTasks();
 
 	// don't execute until all tasks ready NOW have been found
+	static vector<vector<Task>::iterator> readyTaskIts;
 	for(auto it = tasks.begin(); it != tasks.end(); ++it) {
 		if(it->isReady()) {
 			readyTaskIts.push_back(it);
@@ -51,7 +44,6 @@ void Scheduler::iterate() {
 			tasks.erase(*metaIt);
 		}
 	}
-
 	readyTaskIts.clear();
 }
 
@@ -59,4 +51,19 @@ void Scheduler::reset() {
 	for(auto &t : tasks) {
 		t.reset();
 	}
+}
+
+void Scheduler::cleanDeadTasks() {
+	for(auto id : deadTaskIDs) {
+		auto it = tasks.begin();
+		while(it != tasks.end()) {
+			if(it->getID() == id) break;
+			++it;
+		}
+
+		if(it != tasks.end()) {
+			tasks.erase(it);
+		}
+	}
+	deadTaskIDs.clear();
 }

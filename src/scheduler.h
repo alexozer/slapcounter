@@ -16,8 +16,10 @@ class Scheduler {
 
 	private:
 		std::vector<Task> tasks;
+		std::vector<unsigned> deadTaskIDs;
 
 		unsigned addTask(Component* c, unsigned long time, bool oneshot);
+		void cleanDeadTasks();
 };
 
 #endif
