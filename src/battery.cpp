@@ -1,5 +1,6 @@
 #include <SmartMatrix.h>
 #include "battery.h"
+#include "color.h"
 
 constexpr unsigned matrixSize = 32;
 constexpr unsigned long checkInterval = 10000;
@@ -7,16 +8,13 @@ constexpr unsigned batteryCap = 6;
 
 constexpr unsigned redFadeInterval = 1000/60; // about 60fps
 
-const rgb24 blankColor = {0, 0, 0};
-const rgb24 redColor = {255, 0, 0};
-const rgb24 dimRedColor = {127, 0, 0};
-const rgb24 greenColor = {0, 255, 0};
+const rgb24 dimRed = {127, 0, 0};
 
 Battery::Battery(Scheduler* sched, Display* disp):
 	sched{sched}, disp{disp}, statusNeedsUpdate{true},
 	level{0}, redFadeDirection{false}, redFadeID{0} {
 
-	redShade = redColor;
+	redShade = red;
 	checkIntervalID = sched->setInterval(this, checkInterval);
 	disp->addDrawing(this);
 }
@@ -40,11 +38,11 @@ void Battery::update(unsigned intervalID) {
 
 void Battery::updateRedShade() {
 	if(redFadeDirection) {
-		if(redShade.red == redColor.red) {
+		if(redShade.red == red.red) {
 			redFadeDirection = false;
 		}
 	} else {
-		if(redShade.red == dimRedColor.red) {
+		if(redShade.red == red.red) {
 			redFadeDirection = true;
 		}
 	}
@@ -63,14 +61,14 @@ void Battery::draw(SmartMatrix& matrix) {
 	if(level <= 1) {
 		matrix.drawPixel(matrixSize - 1, 0, redShade);
 	} else {
-		matrix.drawFastHLine(matrixSize - level, matrixSize - 1, 0, greenColor);
+		matrix.drawFastHLine(matrixSize - level, matrixSize - 1, 0, green);
 	}
 
 	statusNeedsUpdate = false;
 };
 
 void Battery::clearStatus(SmartMatrix& matrix) {
-	matrix.drawFastHLine(matrixSize - batteryCap, matrixSize - 1, 0, blankColor);
+	matrix.drawFastHLine(matrixSize - batteryCap, matrixSize - 1, 0, green);
 }
 
 void Battery::setLevel(unsigned l) {

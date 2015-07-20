@@ -1,7 +1,6 @@
 #include "blinky.h"
 #include "scheduler.h"
-
-const rgb24 blankColor = {0, 0, 0};
+#include "color.h"
 
 Blinky::Blinky(Scheduler* s, uint16_t x, uint16_t y, uint16_t size, const rgb24& color, unsigned long togglePeriod): sched{s}, x{x}, y{y}, size{size}, togglePeriod{togglePeriod}, state{false}, toggleTaskID{0}, coloringTaskID{0} {
 	col = color;
@@ -27,7 +26,7 @@ void Blinky::update(unsigned taskID) {
 }
 
 void Blinky::draw(SmartMatrix& matrix) {
-	matrix.drawRectangle(x, y, x+size, y+size, state ? col : blankColor);
+	matrix.drawRectangle(x, y, x+size, y+size, state ? col : black);
 }
 
 Blinky::~Blinky() {

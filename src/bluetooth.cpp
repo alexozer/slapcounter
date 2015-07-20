@@ -2,11 +2,12 @@
 using std::vector;
 
 #include "bluetooth.h"
+#include "color.h"
 
 constexpr int statusLength = 6;
 constexpr unsigned long animPeriod = 1000;
-const rgb24 blankColor = {0, 0, 0},
-	  statusColor = {0, 0, 255};
+
+const rgb24& statusColor = blue;
 
 vector<unsigned long> genAnimTimeouts(int statusLength, unsigned long period) {
 	vector<unsigned long> timeouts;
@@ -28,7 +29,7 @@ vector<unsigned long> genAnimTimeouts(int statusLength, unsigned long period) {
 const vector<unsigned long> animTimeouts = genAnimTimeouts(statusLength, animPeriod);
 
 void Bluetooth::clearStatus(SmartMatrix& matrix) {
-	matrix.drawFastHLine(0, statusLength - 1, 0, blankColor);
+	matrix.drawFastHLine(0, statusLength - 1, 0, black);
 }
 
 void Bluetooth::setMode(Mode m) {
