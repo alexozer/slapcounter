@@ -2,9 +2,7 @@
 #define scheduler_h
 
 #include <vector>
-
 #include "component.h"
-#include "task.h"
 
 class Scheduler {
 	public:
@@ -15,6 +13,7 @@ class Scheduler {
 		void reset();
 
 	private:
+		class Task;
 		std::vector<Task> tasks;
 		std::vector<unsigned> deadTaskIDs;
 
