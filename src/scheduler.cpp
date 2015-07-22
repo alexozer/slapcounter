@@ -3,30 +3,6 @@
 #include <vector>
 using std::vector;
 
-class Scheduler::Task {
-	public:
-		Task(Component* compon, unsigned long interval, bool oneshot);
-
-		bool isReady() const {return millis() - lastMillis >= interval; }
-		void run();
-		unsigned getID() const { return id; }
-		void reset() {lastMillis = millis(); }
-		bool isOneshot() const { return oneshot; }
-
-		~Task() {oldIDs.push_back(id);}
-
-	private:
-		unsigned id;
-		Component* c;
-
-		unsigned long interval;
-		unsigned long lastMillis;
-		bool oneshot;
-
-		static unsigned nextID;
-		static std::vector<unsigned> oldIDs;
-};
-
 unsigned Scheduler::Task::nextID = 1; // 0 is reserved as null
 std::vector<unsigned> Scheduler::Task::oldIDs;
 
