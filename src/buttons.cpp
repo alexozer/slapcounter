@@ -9,9 +9,12 @@ volatile unsigned long Buttons::pushTimes[numButtons] = {};
 Buttons::Buttons() {
 	for(auto pin : pins) {
 		pinMode(pin, INPUT_PULLUP);
-		attachInterrupt(pin, Buttons::isr, FALLING);
 	}
 	delayMicroseconds(10);
+
+	attachInterrupt(pins[0], Buttons::onPush0, FALLING);
+	attachInterrupt(pins[1], Buttons::onPush1, FALLING);
+	attachInterrupt(pins[2], Buttons::onPush2, FALLING);
 }
 
 Buttons::~Buttons() {
@@ -26,7 +29,7 @@ bool Buttons::wasPushed(int button) const {
 
 unsigned long Buttons::pushedAt(int button) const {
 	auto sregBackup = SREG;
-	cli();
+	noInterrupts();
 	unsigned long time = pushTimes[button];
 	SREG = sregBackup;
 
@@ -35,7 +38,7 @@ unsigned long Buttons::pushedAt(int button) const {
 
 void Buttons::reset() {
 	auto sregBackup = SREG;
-	cli();
+	noInterrupts();
 
 	for(int i = 0; i != numButtons; ++i) {
 		Buttons::pushTimes[i] = 0;
@@ -44,20 +47,8 @@ void Buttons::reset() {
 	SREG = sregBackup;
 }
 
-void Buttons::isr() {
-	// read pin state as early as possible
-	static bool pinState[numButtons];
-	for(int i = 0; i != numButtons; ++i) {
-		pinState[i] = digitalRead(pins[i]);
+void Buttons::onPush(int button) {
+	if(!pushTimes[button]) {
+		pushTimes[button] = millis();
 	}
-
-	unsigned long time = millis();
-	auto sregBackup = SREG;
-	cli();
-	for(int i = 0; i != numButtons; ++i) {
-		if(pinState[i]) {
-			pushTimes[i] = time;
-		}
-	}
-	SREG = sregBackup;
 }

@@ -13,7 +13,11 @@ class Buttons {
 
 	private:
 		static volatile unsigned long pushTimes[];
-		static void isr();
+
+		static void onPush(int button);
+		static void onPush0() { onPush(0); }
+		static void onPush1() { onPush(1); }
+		static void onPush2() { onPush(2); }
 };
 
 #endif
