@@ -1,25 +1,20 @@
 #ifndef buttons_h
 #define buttons_h
 
-#include <Arduino.h>
-
 class Buttons {
 
 	public:
 		Buttons();
-		~Buttons();
 
+		static void setPushTime(int button, unsigned long time) {
+			pushTimes[button] = time;
+		}
 		bool wasPushed(int button) const { return pushTimes[button]; }
 		unsigned long pushedAt(int button) const { return pushTimes[button]; }
 		void reset();
 
 	private:
 		static volatile unsigned long pushTimes[];
-
-		static void onPush(int button);
-		static void onPush0() { onPush(0); }
-		static void onPush1() { onPush(1); }
-		static void onPush2() { onPush(2); }
 };
 
 #endif

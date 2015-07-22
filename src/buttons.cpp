@@ -1,5 +1,7 @@
 #include "buttons.h"
-#include <EnableInterrupt.h>
+#include <Arduino.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 const int pins[] = {11, 12, 15};
 constexpr int numButtons = sizeof(pins) / sizeof(pins[0]);
@@ -7,15 +9,11 @@ constexpr int numButtons = sizeof(pins) / sizeof(pins[0]);
 volatile unsigned long Buttons::pushTimes[numButtons] = {};
 
 Buttons::Buttons() {
-	enableInterrupt(pins[0], Buttons::onPush0, FALLING);
-	enableInterrupt(pins[1], Buttons::onPush1, FALLING);
-	enableInterrupt(pins[2], Buttons::onPush2, FALLING);
-}
-
-Buttons::~Buttons() {
 	for(auto pin : pins) {
-		disableInterrupt(pin);
+		pinMode(pin, INPUT_PULLUP);
 	}
+	delayMicroseconds(10);
+
 }
 
 void Buttons::reset() {
@@ -24,8 +22,20 @@ void Buttons::reset() {
 	}
 }
 
-void Buttons::onPush(int button) {
-	if(!pushTimes[button]) {
-		pushTimes[button] = millis();
+SIGNAL(PCINT0_vect) {
+	// read pin state as early as possible
+	static bool pinState[numButtons];
+	for(int i = 0; i != numButtons; ++i) {
+		pinState[i] = digitalRead(pins[i]);
 	}
+
+	unsigned long time = millis();
+	auto sregBackup = SREG;
+	cli();
+	for(int i = 0; i != numButtons; ++i) {
+		if(pinState[i]) {
+			Buttons::setPushTime(i, time);
+		}
+	}
+	SREG = sregBackup;
 }
