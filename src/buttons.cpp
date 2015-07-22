@@ -20,11 +20,11 @@ Buttons::~Buttons() {
 	}
 }
 
-bool Buttons::wasPushed(int button) {
+bool Buttons::wasPushed(int button) const {
 	return pushedAt(button);
 }
 
-unsigned long Buttons::pushedAt(int button) {
+unsigned long Buttons::pushedAt(int button) const {
 	auto sregBackup = SREG;
 	cli();
 	unsigned long time = pushTimes[button];
@@ -34,9 +34,14 @@ unsigned long Buttons::pushedAt(int button) {
 }
 
 void Buttons::reset() {
+	auto sregBackup = SREG;
+	cli();
+
 	for(int i = 0; i != numButtons; ++i) {
 		Buttons::pushTimes[i] = 0;
 	}
+
+	SREG = sregBackup;
 }
 
 void Buttons::isr() {
