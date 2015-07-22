@@ -7,8 +7,8 @@ class Buttons {
 		Buttons();
 		~Buttons();
 
-		bool wasPushed(int button) const { return pushTimes[button]; }
-		unsigned long pushedAt(int button) const { return pushTimes[button]; }
+		bool wasPushed(int button);
+		unsigned long pushedAt(int button);
 		void reset();
 
 	private:

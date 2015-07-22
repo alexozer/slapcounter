@@ -20,6 +20,19 @@ Buttons::~Buttons() {
 	}
 }
 
+bool Buttons::wasPushed(int button) {
+	return pushedAt(button);
+}
+
+unsigned long Buttons::pushedAt(int button) {
+	auto sregBackup = SREG;
+	cli();
+	unsigned long time = pushTimes[button];
+	SREG = sregBackup;
+
+	return time;
+}
+
 void Buttons::reset() {
 	for(int i = 0; i != numButtons; ++i) {
 		Buttons::pushTimes[i] = 0;
