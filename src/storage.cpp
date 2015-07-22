@@ -1,6 +1,6 @@
-#include <vector>
-#include <EEPROM.h>
 #include "storage.h"
+#include <EEPROM.h>
+#include <vector>
 using std::vector;
 
 constexpr int romSize = 2048;

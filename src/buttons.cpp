@@ -1,5 +1,5 @@
-#include <EnableInterrupt.h>
 #include "buttons.h"
+#include <EnableInterrupt.h>
 
 const int pins[] = {11, 12, 15};
 constexpr int numButtons = sizeof(pins) / sizeof(pins[0]);

@@ -1,8 +1,7 @@
+#include "scheduler.h"
+#include <Arduino.h>
 #include <vector>
 using std::vector;
-#include <Arduino.h>
-
-#include "scheduler.h"
 
 class Scheduler::Task {
 	public:

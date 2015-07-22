@@ -1,10 +1,10 @@
 #ifndef blinky_h
 #define blinky_h
 
-#include "SmartMatrix.h"
 #include "component.h"
 #include "drawing.h"
 #include "scheduler.h"
+#include <SmartMatrix.h>
 
 class Blinky : public Component, public Drawing {
 	public:

@@ -1,8 +1,7 @@
-#include <vector>
-using std::vector;
-
 #include "bluetooth.h"
 #include "color.h"
+#include <vector>
+using std::vector;
 
 constexpr int statusLength = 6;
 constexpr unsigned long animPeriod = 1000;

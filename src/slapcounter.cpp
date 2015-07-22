@@ -1,7 +1,6 @@
-#include <Arduino.h>
-
 #include "slapcounter.h"
 #include "blinky.h"
+#include <Arduino.h>
 
 SlapCounter sc;
 

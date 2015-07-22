@@ -1,8 +1,8 @@
 #ifndef scheduler_h
 #define scheduler_h
 
-#include <vector>
 #include "component.h"
+#include <vector>
 
 class Scheduler {
 	public:

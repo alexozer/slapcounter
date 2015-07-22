@@ -1,8 +1,8 @@
 #ifndef storage_h
 #define storage_h
 
-#include <vector>
 #include <Arduino.h>
+#include <vector>
 
 class Storage {
 	public:

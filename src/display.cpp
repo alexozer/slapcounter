@@ -1,8 +1,7 @@
-#include <algorithm>
-#include "SmartMatrix.h"
-
 #include "display.h"
 #include "scheduler.h"
+#include <SmartMatrix.h>
+#include <algorithm>
 
 constexpr unsigned long drawInterval = 1000 / 60; // roughly 60fps
 

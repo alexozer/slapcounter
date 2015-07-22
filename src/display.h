@@ -1,11 +1,10 @@
 #ifndef display_h
 #define display_h
 
-#include <vector>
-
 #include "component.h"
 #include "scheduler.h"
 #include "drawing.h"
+#include <vector>
 
 class Display : public Component {
 	public:
