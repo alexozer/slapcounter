@@ -1,7 +1,5 @@
 #include "buttons.h"
 #include <Arduino.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
 
 const int pins[] = {11, 12, 15};
 constexpr int numButtons = sizeof(pins) / sizeof(pins[0]);
@@ -11,9 +9,15 @@ volatile unsigned long Buttons::pushTimes[numButtons] = {};
 Buttons::Buttons() {
 	for(auto pin : pins) {
 		pinMode(pin, INPUT_PULLUP);
+		attachInterrupt(pin, Buttons::isr, FALLING);
 	}
 	delayMicroseconds(10);
+}
 
+Buttons::~Buttons() {
+	for(auto pin : pins) {
+		detachInterrupt(pin);
+	}
 }
 
 void Buttons::reset() {
@@ -22,7 +26,7 @@ void Buttons::reset() {
 	}
 }
 
-SIGNAL(PCINT0_vect) {
+void Buttons::isr() {
 	// read pin state as early as possible
 	static bool pinState[numButtons];
 	for(int i = 0; i != numButtons; ++i) {
@@ -34,7 +38,7 @@ SIGNAL(PCINT0_vect) {
 	cli();
 	for(int i = 0; i != numButtons; ++i) {
 		if(pinState[i]) {
-			Buttons::setPushTime(i, time);
+			pushTimes[i] = time;
 		}
 	}
 	SREG = sregBackup;
