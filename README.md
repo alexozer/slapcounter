@@ -10,7 +10,7 @@ The sLap Counter is an intelligent, personal poolside lap counter with smartphon
 
 Before starting, please make sure you have those installed:
 
-*	[Arduino IDE 1.0.x](http://arduino.cc/en/main/software#toc2) - Download the app from the website
+*	[Arduino IDE 1.0.6](https://www.arduino.cc/en/Main/OldSoftwareReleases#previous) - Download the app from the website
 *	[Homebrew](http://mxcl.github.io/homebrew/) - Follow the instructions on their website
 *	[Git](http://git-scm.com/) - use `brew install git` to install the latest version
 *   [Teensyduino](https://www.pjrc.com/teensy/td_download.html) - follow the instructions for Arduino IDE 1.0.6
