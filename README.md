@@ -35,7 +35,7 @@ $ sudo apt-get install git arduino
 #### OS X
 
 ```Bash
-$ brew tap WeAreLeka/avr
+$ brew tap osx-cross/avr
 $ brew install avr-libc
 $ brew install avrdude
 ```
