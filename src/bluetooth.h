@@ -10,12 +10,7 @@ class Bluetooth : public Component, public Drawing {
 	public:
 		enum class Mode { disconnected, connecting, connected };
 
-		Bluetooth(Scheduler* sched, Display* disp): 
-			sched{sched}, disp{disp},
-			mode{Mode::disconnected}, statusNeedsUpdate{true},
-			currAnimFrame{0} {
-			disp->addDrawing(this);
-		};
+		Bluetooth(Scheduler* sched, Display* disp); 
 		void setMode(Mode m);
 		void update(unsigned) override;
 		void draw(SmartMatrix& matrix) override;
@@ -27,7 +22,9 @@ class Bluetooth : public Component, public Drawing {
 		Mode mode;
 		bool statusNeedsUpdate;
 		int currAnimFrame;
+		std::vector<unsigned long> animTimeouts;
 
+		std::vector<unsigned long> genAnimTimeouts(int statusLength, unsigned long period);
 		void clearStatus(SmartMatrix& matrix);
 };
 

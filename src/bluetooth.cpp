@@ -8,7 +8,15 @@ constexpr unsigned long animPeriod = 1000;
 
 const rgb24& statusColor = blue;
 
-vector<unsigned long> genAnimTimeouts(int statusLength, unsigned long period) {
+Bluetooth::Bluetooth(Scheduler* sched, Display* disp): 
+	sched{sched}, disp{disp},
+	mode{Mode::disconnected}, statusNeedsUpdate{true},
+	currAnimFrame{0}, animTimeouts(genAnimTimeouts(statusLength, animPeriod)) {
+
+	disp->addDrawing(this);
+}
+
+vector<unsigned long> Bluetooth::genAnimTimeouts(int statusLength, unsigned long period) {
 	vector<unsigned long> timeouts;
 
 	for(double x = 0, lastTimeout = 0; x != statusLength; ++x) {
@@ -24,8 +32,6 @@ vector<unsigned long> genAnimTimeouts(int statusLength, unsigned long period) {
 
 	return timeouts;
 }
-
-const vector<unsigned long> animTimeouts = genAnimTimeouts(statusLength, animPeriod);
 
 void Bluetooth::clearStatus(SmartMatrix& matrix) {
 	matrix.drawFastHLine(0, statusLength - 1, 0, black);
