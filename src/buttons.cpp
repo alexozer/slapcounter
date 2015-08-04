@@ -28,23 +28,22 @@ bool Buttons::wasPushed(int button) const {
 }
 
 unsigned long Buttons::pushedAt(int button) const {
-	auto sregBackup = SREG;
-	noInterrupts();
-	unsigned long time = pushTimes[button];
-	SREG = sregBackup;
+	unsigned long time;
+
+	{
+		AtomicBlock ab;
+		time = pushTimes[button];
+	}
 
 	return time;
 }
 
 void Buttons::reset() {
-	auto sregBackup = SREG;
-	noInterrupts();
+	AtomicBlock ab;
 
 	for(int i = 0; i != numButtons; ++i) {
 		Buttons::pushTimes[i] = 0;
 	}
-
-	SREG = sregBackup;
 }
 
 void Buttons::onPush(int button) {
