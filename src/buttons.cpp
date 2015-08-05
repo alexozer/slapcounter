@@ -5,7 +5,7 @@ constexpr int Buttons::pins[];
 constexpr unsigned long pollInterval = 10;
 constexpr int bounceInterval = 5;
 
-Buttons::Buttons(Scheduler* sched): sched{sched} {
+Buttons::Buttons(Scheduler* sched): sched{sched}, pushTimes{} {
 	for(int i = 0; i != numButtons; ++i) {
 		pinMode(pins[i], INPUT_PULLUP);
 		bounces[i].attach(pins[i]);
