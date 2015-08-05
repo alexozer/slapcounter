@@ -1,37 +1,31 @@
 #ifndef buttons_h
 #define buttons_h
 
+#include "component.h"
+#include "scheduler.h"
+#define BOUNCE_LOCK_OUT
 #include "Bounce2.h"
 #include <Arduino.h>
 
-class Buttons {
+class Buttons : public Component {
 
 	public:
-		Buttons();
-		~Buttons();
+		Buttons(Scheduler* sched);
 
+		void update(unsigned) override;
 		bool wasPushed(int button) const;
 		unsigned long pushedAt(int button) const;
 		void reset();
 		void reset(int button);
 
 	private:
-		static volatile unsigned long pushTimes[];
-		static volatile Bounce bounces[];
+		Scheduler* sched;
 
-		static void onPush(int button);
-		static void onPush0() { onPush(0); }
-		static void onPush1() { onPush(1); }
-		static void onPush2() { onPush(2); }
+		static constexpr int pins[] = {11, 12, 15};
+		static constexpr int numButtons = sizeof(pins) / sizeof(pins[0]);
 
-		// based on advice from http://savannah.nongnu.org/bugs/?22163
-		class AtomicBlock {
-			public:
-				AtomicBlock(): sreg{SREG} { cli(); }
-				~AtomicBlock() { asm("" ::: "memory"); SREG = sreg; }
-			private:
-				uint8_t sreg;
-		};
+		unsigned long pushTimes[numButtons];
+		Bounce bounces[numButtons];
 };
 
 #endif

@@ -1,25 +1,30 @@
 #include "buttons.h"
 #include <Arduino.h>
 
-const int pins[] = {11, 12, 15};
-constexpr int numButtons = sizeof(pins) / sizeof(pins[0]);
+constexpr int Buttons::pins[];
+constexpr unsigned long pollInterval = 10;
+constexpr int bounceInterval = 5;
 
-volatile unsigned long Buttons::pushTimes[numButtons] = {};
-
-Buttons::Buttons() {
-	for(auto pin : pins) {
-		pinMode(pin, INPUT_PULLUP);
+Buttons::Buttons(Scheduler* sched): sched{sched} {
+	for(int i = 0; i != numButtons; ++i) {
+		pinMode(pins[i], INPUT_PULLUP);
+		bounces[i].attach(pins[i]);
+		bounces[i].interval(bounceInterval);
 	}
 	delayMicroseconds(10);
 
-	attachInterrupt(pins[0], Buttons::onPush0, FALLING);
-	attachInterrupt(pins[1], Buttons::onPush1, FALLING);
-	attachInterrupt(pins[2], Buttons::onPush2, FALLING);
+	sched->setInterval(this, pollInterval);
 }
 
-Buttons::~Buttons() {
-	for(auto pin : pins) {
-		detachInterrupt(pin);
+void Buttons::update(unsigned) {
+	for(auto& b : bounces) {
+		b.update();
+	}
+
+	for(int i = 0; i != numButtons; ++i) {
+		if(bounces[i].fell()) {
+			pushTimes[i] = millis();
+		}
 	}
 }
 
@@ -28,32 +33,15 @@ bool Buttons::wasPushed(int button) const {
 }
 
 unsigned long Buttons::pushedAt(int button) const {
-	unsigned long time;
-
-	{
-		AtomicBlock ab;
-		time = pushTimes[button];
-	}
-
-	return time;
+	return pushTimes[button];
 }
 
 void Buttons::reset() {
-	AtomicBlock ab;
-
 	for(int i = 0; i != numButtons; ++i) {
 		Buttons::pushTimes[i] = 0;
 	}
 }
 
 void Buttons::reset(int button) {
-	AtomicBlock ab;
-
 	Buttons::pushTimes[button] = 0;
-}
-
-void Buttons::onPush(int button) {
-	if(!pushTimes[button]) {
-		pushTimes[button] = millis();
-	}
 }
