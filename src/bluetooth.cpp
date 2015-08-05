@@ -37,6 +37,7 @@ void Bluetooth::clearStatus() {
 }
 
 void Bluetooth::setMode(Mode mode) {
+	if(mode == this->mode) return;
 	this->mode = mode;
 	clearStatus();
 
@@ -50,6 +51,7 @@ void Bluetooth::setMode(Mode mode) {
 			break;
 
 		case Mode::connecting:
+			currAnimFrame = 0;
 			update(0);
 			break;
 	}
@@ -57,6 +59,8 @@ void Bluetooth::setMode(Mode mode) {
 
 void Bluetooth::update(unsigned) {
 	if(mode != Mode::connecting) return;
+
+	clearStatus();
 
 	if(currAnimFrame == 2 * statusLength) {
 		currAnimFrame = 0;
@@ -69,7 +73,6 @@ void Bluetooth::update(unsigned) {
 	}
 
 	matrix->swapBuffers();
-
 	sched->setTimeout(this, animTimeouts[currAnimFrame]);
 	++currAnimFrame;
 }
