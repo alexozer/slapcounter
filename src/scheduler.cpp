@@ -43,24 +43,24 @@ void Scheduler::iterate() {
 	cleanDeadTasks();
 
 	// don't execute until all tasks ready NOW have been found
-	static vector<vector<Task>::iterator> readyTaskIts;
-	for(auto it = tasks.begin(); it != tasks.end(); ++it) {
-		if(it->isReady()) {
-			readyTaskIts.push_back(it);
+	static vector<vector<Task>::size_type> readyTaskIs;
+	for(vector<Task>::size_type i = 0; i != tasks.size(); ++i) {
+		if(tasks[i].isReady()) {
+			readyTaskIs.push_back(i);
 		}
 	}
 
-	for(auto &it : readyTaskIts) {
-		it->reset();
-		it->run();
+	for(auto i : readyTaskIs) {
+		tasks[i].reset();
+		tasks[i].run();
 	}
 
-	for(auto metaIt = readyTaskIts.rbegin(); metaIt != readyTaskIts.rend(); ++metaIt) {
-		if((*metaIt)->isOneshot()) {
-			tasks.erase(*metaIt);
+	for(auto metaIt = readyTaskIs.rbegin(); metaIt != readyTaskIs.rend(); ++metaIt) {
+		if(tasks[*metaIt].isOneshot()) {
+			tasks.erase(tasks.begin() + *metaIt);
 		}
 	}
-	readyTaskIts.clear();
+	readyTaskIs.clear();
 }
 
 void Scheduler::reset() {
