@@ -7,7 +7,7 @@
 
 class SlapCounter {
 	public:
-		SlapCounter();
+		SlapCounter(): disp(&sched) {}
 		void run();
 
 	private:

@@ -2,10 +2,6 @@
 #include "blinky.h"
 #include <Arduino.h>
 
-SlapCounter sc;
-
-SlapCounter::SlapCounter(): disp(&sched) {}
-
 void SlapCounter::run() {
 	Blinky b0(&sched, 0, 0, 10, rgb24{127, 0, 127}, 250),
 		   b1(&sched, 4, 4, 15, rgb24{0, 127, 255}, 750),
@@ -23,8 +19,3 @@ void SlapCounter::run() {
 		sched.iterate();
 	}
 }
-
-int main() {
-	sc.run();
-}
-

@@ -1,6 +1,6 @@
 #include "battery.h"
 #include "color.h"
-#include <SmartMatrix.h>
+#include "SmartMatrix_32x32.h"
 
 constexpr unsigned matrixSize = 32;
 constexpr unsigned long checkInterval = 10000;

@@ -4,7 +4,7 @@
 #include "component.h"
 #include "drawing.h"
 #include "scheduler.h"
-#include <SmartMatrix.h>
+#include "SmartMatrix_32x32.h"
 
 class Blinky : public Component, public Drawing {
 	public:

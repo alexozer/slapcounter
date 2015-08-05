@@ -1,7 +1,7 @@
 #ifndef drawing_h
 #define drawing_h
 
-#include <SmartMatrix.h>
+#include "SmartMatrix_32x32.h"
 
 class Drawing {
 	public:

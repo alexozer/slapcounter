@@ -1,6 +1,7 @@
 #ifndef buttons_h
 #define buttons_h
 
+#include "Bounce2.h"
 #include <Arduino.h>
 
 class Buttons {
@@ -16,6 +17,7 @@ class Buttons {
 
 	private:
 		static volatile unsigned long pushTimes[];
+		static volatile Bounce bounces[];
 
 		static void onPush(int button);
 		static void onPush0() { onPush(0); }
