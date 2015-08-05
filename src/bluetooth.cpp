@@ -3,18 +3,18 @@
 #include <vector>
 using std::vector;
 
-constexpr int statusLength = 6;
+constexpr int statusLength = 32;
 constexpr unsigned long animPeriod = 1000;
 
 const rgb24& statusColor = blue;
 
-Bluetooth::Bluetooth(Scheduler* sched, Display* disp): 
-	sched{sched}, disp{disp},
-	mode{Mode::disconnected}, statusNeedsUpdate{true},
-	currAnimFrame{0}, animTimeouts(genAnimTimeouts(statusLength, animPeriod)) {
-
-	disp->addDrawing(this);
-}
+Bluetooth::Bluetooth(Scheduler* sched, SmartMatrix* matrix):
+	sched{sched},
+	matrix{matrix},
+	mode{Mode::disconnected},
+	animID{0},
+	currAnimFrame{0},
+	animTimeouts(genAnimTimeouts(statusLength, animPeriod)) {}
 
 vector<unsigned long> Bluetooth::genAnimTimeouts(int statusLength, unsigned long period) {
 	vector<unsigned long> timeouts;
@@ -25,58 +25,51 @@ vector<unsigned long> Bluetooth::genAnimTimeouts(int statusLength, unsigned long
 		lastTimeout = dt;
 	}
 
-	const double halfPeriod = period / 2;
-	for(auto it = timeouts.crbegin(); it != timeouts.crend(); ++it) {
-		timeouts.push_back(*it + halfPeriod);
+	for(int i = timeouts.size() - 1; i != -1; --i) {
+		timeouts.push_back(timeouts[i] + 0); // add 0 so it doesn't act as a reference
 	}
 
 	return timeouts;
 }
 
-void Bluetooth::clearStatus(SmartMatrix& matrix) {
-	matrix.drawFastHLine(0, statusLength - 1, 0, black);
+void Bluetooth::clearStatus() {
+	matrix->drawFastHLine(0, statusLength - 1, 0, black);
 }
 
-void Bluetooth::setMode(Mode m) {
-	mode = m;
-	statusNeedsUpdate = true;
+void Bluetooth::setMode(Mode mode) {
+	this->mode = mode;
+	clearStatus();
 
-	if(m == Mode::connecting) {
-		currAnimFrame = 0; 
-		update(0);
+	switch(mode) {
+		case Mode::connected:
+			matrix->drawPixel(0, 0, statusColor);
+			// fallthrough
+
+		case Mode::disconnected:
+			matrix->swapBuffers();
+			break;
+
+		case Mode::connecting:
+			update(0);
+			break;
 	}
 }
 
 void Bluetooth::update(unsigned) {
 	if(mode != Mode::connecting) return;
 
-	sched->setTimeout(this, animTimeouts[currAnimFrame++]);
-	if(currAnimFrame == 2 * statusLength) currAnimFrame = 0;
-
-	statusNeedsUpdate = true;
-}
-
-void Bluetooth::draw(SmartMatrix& matrix) {
-	if(!statusNeedsUpdate) return;
-
-	clearStatus(matrix);
-
-	switch(mode) {
-		case Mode::disconnected:
-			break;
-
-		case Mode::connected:
-			matrix.drawPixel(0, 0, statusColor);
-			break;
-
-		case Mode::connecting:
-			if(currAnimFrame < statusLength) {
-				matrix.drawPixel(currAnimFrame, 0, statusColor);
-			} else {
-				matrix.drawPixel(statusLength - (currAnimFrame - statusLength) - 1, 0, statusColor);
-			}
-			break;
+	if(currAnimFrame == 2 * statusLength) {
+		currAnimFrame = 0;
 	}
 
-	statusNeedsUpdate = false;
+	if(currAnimFrame < statusLength) {
+		matrix->drawPixel(currAnimFrame, 0, statusColor);
+	} else {
+		matrix->drawPixel(statusLength - (currAnimFrame - statusLength) - 1, 0, statusColor);
+	}
+
+	matrix->swapBuffers();
+
+	sched->setTimeout(this, animTimeouts[currAnimFrame]);
+	++currAnimFrame;
 }

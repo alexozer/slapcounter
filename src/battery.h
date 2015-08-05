@@ -2,30 +2,27 @@
 #define battery_h
 
 #include "component.h"
-#include "drawing.h"
 #include "scheduler.h"
-#include "display.h"
+#include "SmartMatrix_32x32.h"
 
-class Battery : public Component, public Drawing {
+class Battery : public Component {
 	public:
-		Battery(Scheduler* sched, Display* disp);
+		Battery(Scheduler* sched, SmartMatrix* matrix);
 		void update(unsigned) override;
-		void draw(SmartMatrix& matrix) override;
 		void setLevel(unsigned l);
 		~Battery();
 
 	private:
 		Scheduler* sched;
-		Display* disp;
+		SmartMatrix* matrix;
 		unsigned checkIntervalID;
-		bool statusNeedsUpdate;
 		unsigned level;
 
 		rgb24 redShade;
 		bool redFadeDirection;
 		unsigned redFadeID;
 
-		void clearStatus(SmartMatrix& matrix);
+		void clearStatus();
 		void updateRedShade();
 };
 

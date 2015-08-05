@@ -10,16 +10,20 @@ constexpr unsigned redFadeInterval = 1000/60; // about 60fps
 
 const rgb24 dimRed = {127, 0, 0};
 
-Battery::Battery(Scheduler* sched, Display* disp):
-	sched{sched}, disp{disp}, statusNeedsUpdate{true},
-	level{0}, redFadeDirection{false}, redFadeID{0} {
+Battery::Battery(Scheduler* sched, SmartMatrix* matrix):
+	sched{sched},
+	matrix{matrix},
+	level{0},
+	redFadeDirection{false},
+	redFadeID{0} {
 
 	redShade = red;
 	checkIntervalID = sched->setInterval(this, checkInterval);
-	disp->addDrawing(this);
 }
 
 void Battery::update(unsigned intervalID) {
+	clearStatus();
+
 	if(intervalID == checkIntervalID) {
 		// check battery level here
 
@@ -29,11 +33,15 @@ void Battery::update(unsigned intervalID) {
 			sched->clearInterval(redFadeID);
 			redFadeID = 0;
 		}
+
+		matrix->drawFastHLine(matrixSize - level, matrixSize - 1, 0, green);
+
 	} else if(intervalID == redFadeID) {
 		updateRedShade();
+		matrix->drawPixel(matrixSize - 1, 0, redShade);
 	}
 
-	statusNeedsUpdate = true;
+	matrix->swapBuffers(true);
 }
 
 void Battery::updateRedShade() {
@@ -54,21 +62,8 @@ void Battery::updateRedShade() {
 	}
 }
 
-void Battery::draw(SmartMatrix& matrix) {
-	if(!statusNeedsUpdate) return;
-
-	clearStatus(matrix);
-	if(level <= 1) {
-		matrix.drawPixel(matrixSize - 1, 0, redShade);
-	} else {
-		matrix.drawFastHLine(matrixSize - level, matrixSize - 1, 0, green);
-	}
-
-	statusNeedsUpdate = false;
-};
-
-void Battery::clearStatus(SmartMatrix& matrix) {
-	matrix.drawFastHLine(matrixSize - batteryCap, matrixSize - 1, 0, green);
+void Battery::clearStatus() {
+	matrix->drawFastHLine(matrixSize - batteryCap, matrixSize - 1, 0, green);
 }
 
 void Battery::setLevel(unsigned l) {
@@ -78,5 +73,4 @@ void Battery::setLevel(unsigned l) {
 Battery::~Battery() {
 	sched->clearInterval(checkIntervalID);
 	sched->clearInterval(redFadeID);
-	disp->removeDrawing(this);
 }
