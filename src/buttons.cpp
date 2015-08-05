@@ -46,6 +46,12 @@ void Buttons::reset() {
 	}
 }
 
+void Buttons::reset(int button) {
+	AtomicBlock ab;
+
+	Buttons::pushTimes[button] = 0;
+}
+
 void Buttons::onPush(int button) {
 	if(!pushTimes[button]) {
 		pushTimes[button] = millis();

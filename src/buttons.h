@@ -12,6 +12,7 @@ class Buttons {
 		bool wasPushed(int button) const;
 		unsigned long pushedAt(int button) const;
 		void reset();
+		void reset(int button);
 
 	private:
 		static volatile unsigned long pushTimes[];
