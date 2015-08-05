@@ -3,6 +3,8 @@
 ### For detailled explanations about all the avalaible options,
 ### please refer to https://github.com/sudar/Arduino-Makefile/blob/master/arduino-mk-vars.md
 
+ARDUINO_LIBS    = EEPROM SmartMatrix Bounce2
+
 ### PROJECT_DIR
 ### This is the path to where you have created/cloned your project
 PROJECT_DIR       = {{ replace everything after the = with your path }}
