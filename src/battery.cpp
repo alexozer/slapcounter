@@ -25,23 +25,21 @@ void Battery::update(unsigned intervalID) {
 	clearStatus();
 
 	if(intervalID == checkIntervalID) {
-		// check battery level here
-
-		if(level <= 1 && redFadeID == 0) {
-			redFadeID = sched->setInterval(this, redFadeInterval);
-		} else if(level > 1 && redFadeID != 0) {
+		// TODO check battery level here
+		
+		if(level > 1) {
 			sched->clearInterval(redFadeID);
 			redFadeID = 0;
+			matrix->drawFastHLine(matrixSize - level, matrixSize - 1, 0, green);
+			matrix->swapBuffers();
+		} else {
+			if(redFadeID == 0) {
+				redFadeID = sched->setInterval(this, redFadeInterval);
+			}
 		}
-
-		matrix->drawFastHLine(matrixSize - level, matrixSize - 1, 0, green);
-
 	} else if(intervalID == redFadeID) {
 		updateRedShade();
-		matrix->drawPixel(matrixSize - 1, 0, redShade);
 	}
-
-	matrix->swapBuffers(true);
 }
 
 void Battery::updateRedShade() {
@@ -56,18 +54,22 @@ void Battery::updateRedShade() {
 	}
 
 	if(redFadeDirection) {
-		++redShade.red;
+		redShade.red += 4;
 	} else {
-		--redShade.red;
+		redShade.red -= 4;
 	}
+
+	matrix->drawPixel(matrixSize - 1, 0, redShade);
+	matrix->swapBuffers();
 }
 
 void Battery::clearStatus() {
-	matrix->drawFastHLine(matrixSize - batteryCap, matrixSize - 1, 0, green);
+	matrix->drawFastHLine(matrixSize - batteryCap, matrixSize - 1, 0, black);
 }
 
 void Battery::setLevel(unsigned l) {
 	level = l;
+	update(checkIntervalID);
 }
 
 Battery::~Battery() {
