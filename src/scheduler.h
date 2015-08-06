@@ -19,10 +19,10 @@ class Scheduler {
 			public:
 				Task(Component* compon, unsigned long interval, bool oneshot);
 
-				bool isReady() const {return millis() - lastMillis >= interval; }
-				void run();
+				bool isReady(unsigned long time) const {return time - lastMillis >= interval; }
+				void run(unsigned long time);
+				void reset(unsigned long time) { lastMillis = time; }
 				unsigned getID() const { return id; }
-				void reset() {lastMillis = millis(); }
 				bool isOneshot() const { return oneshot; }
 
 				~Task() {oldIDs.push_back(id);}

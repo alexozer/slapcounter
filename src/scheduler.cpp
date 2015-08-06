@@ -18,8 +18,8 @@ Scheduler::Task::Task(Component* compon, unsigned long interval, bool oneshot)
 	}
 }
 
-void Scheduler::Task::run() {
-	reset();
+void Scheduler::Task::run(unsigned long time) {
+	reset(time);
 	c->update(id);
 }
 
@@ -46,15 +46,15 @@ void Scheduler::iterate() {
 
 	// don't execute until all tasks ready NOW have been found
 	static vector<vector<Task>::size_type> readyTaskIs;
+	auto time = millis();
 	for(vector<Task>::size_type i = 0; i != tasks.size(); ++i) {
-		if(tasks[i]->isReady()) {
+		if(tasks[i]->isReady(time)) {
 			readyTaskIs.push_back(i);
 		}
 	}
 
 	for(auto i : readyTaskIs) {
-		tasks[i]->reset();
-		tasks[i]->run();
+		tasks[i]->run(time);
 	}
 
 	for(auto metaIt = readyTaskIs.rbegin(); metaIt != readyTaskIs.rend(); ++metaIt) {
@@ -66,8 +66,9 @@ void Scheduler::iterate() {
 }
 
 void Scheduler::reset() {
+	auto time = millis();
 	for(auto &t : tasks) {
-		t->reset();
+		t->reset(time);
 	}
 }
 
