@@ -4,6 +4,7 @@
 #include "component.h"
 #include <Arduino.h>
 #include <vector>
+#include <memory>
 
 class Scheduler {
 	public:
@@ -37,7 +38,7 @@ class Scheduler {
 				static unsigned nextID;
 				static std::vector<unsigned> oldIDs;
 		};
-		std::vector<Task> tasks;
+		std::vector<std::unique_ptr<Task>> tasks;
 		std::vector<unsigned> deadTaskIDs;
 
 		unsigned addTask(Component* c, unsigned long time, bool oneshot);
