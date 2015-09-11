@@ -4,6 +4,7 @@
 #include "buttons.h"
 #include "color.h"
 #include "bluetooth.h"
+#include "session.h"
 
 #include "SmartMatrix_32x32.h"
 #include <Arduino.h>
@@ -15,7 +16,7 @@ SmartMatrix matrix;
 
 void initMatrix() {
 	matrix.begin();
-	matrix.setBrightness(2);
+	matrix.setBrightness(7);
 }
 
 void wait() {
@@ -84,6 +85,26 @@ void testBluetooth() {
 	}
 }
 
+void testBigFont() {
+	Serial.println("testing big font");
+
+	matrix.drawString(2, 2, green, "04", 4);
+	matrix.drawString(0, 27, blue, "5:11");
+	matrix.drawString(17, 27, blue, "5:11");
+
+	matrix.swapBuffers();
+}
+
+void testSession() {
+	Serial.println("testing session");
+
+	Buttons buttons(&sched);
+	Session session(&sched, &matrix, &buttons, nullptr);
+	session.begin();
+	Serial.println("initialized session");
+	while(true) { sched.iterate(); }
+}
+
 void runTests() {
 	Serial.begin(9600);
 	initMatrix();
@@ -91,5 +112,7 @@ void runTests() {
 
 	//blink();
 	//testButtons();
-	testBluetooth();
+	//testBluetooth();
+	//testBigFont();
+	testSession();
 }

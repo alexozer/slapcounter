@@ -14,19 +14,19 @@ class Session : public Component {
 		Session(Scheduler* sched, SmartMatrix* matrix, Buttons* buttons, Storage* stor);
 		~Session();
 		
-		void begin(int lapGoal);
-		void update(unsigned) override;
+		void begin();
+		void update(unsigned taskID) override;
 
 	private:
 		Scheduler* sched;
 		SmartMatrix* matrix;
 		Buttons* buttons;
 		Storage* stor;
-
+ 
 		int lapGoal;
 		int currLap;
 
-		unsigned bpushTaskID;
+		unsigned bpushTaskID, timerTaskID;
 
 		unsigned long lastTime; // in milliseconds
 		std::vector<uint16_t> lapTimes; // in centiseconds
@@ -35,8 +35,12 @@ class Session : public Component {
 		Mode mode;
 
 		uint16_t millisToCentis(unsigned long millis);
+		void onSlap();
+		void redraw();
+		void drawTime(int x, int y, uint16_t centis, const rgb24& color, bool drawCentis);
 		void drawLapCount();
-		void drawLapTime();
+		void drawTimeBorder();
+		void clearDisplay();
 };
 
 #endif
