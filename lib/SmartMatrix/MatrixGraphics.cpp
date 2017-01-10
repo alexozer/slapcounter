@@ -742,6 +742,18 @@ void SmartMatrix::drawChar(int16_t x, int16_t y, const rgb24& charColor, char ch
     }
 }
 
+void SmartMatrix::drawChar(int16_t x, int16_t y, const rgb24& charColor, char character, int16_t pxSize) {
+    for(int ycnt = 0; ycnt != font->Height; ++ycnt) {
+        for(int xcnt = 0; xcnt != font->Width; ++xcnt) {
+            if(getBitmapFontPixelAtXY(character, xcnt, ycnt, font)) {
+                int finalX = x + xcnt * pxSize;
+                int finalY = y + ycnt * pxSize;
+                fillRectangle(finalX, finalY, finalX + pxSize - 1, finalY + pxSize - 1, charColor);
+            }
+        }
+    }
+}
+
 void SmartMatrix::drawString(int16_t x, int16_t y, const rgb24& charColor, const char text[]) {
     int xcnt, ycnt, i = 0, offset = 0;
     char character;
@@ -761,6 +773,14 @@ void SmartMatrix::drawString(int16_t x, int16_t y, const rgb24& charColor, const
         }
         x += font->Width;
     }
+}
+
+void SmartMatrix::drawString(int16_t x, int16_t y, const rgb24& charColor, const char text[], int16_t pxSize) {
+	char c;
+	for(int i = 0; (c = text[i]); ++i) {
+        drawChar(x, y, charColor, c, pxSize);
+        x += font->Width * pxSize;
+	}
 }
 
 // draw string while clearing background

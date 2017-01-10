@@ -132,7 +132,9 @@ public:
       const rgb24& outlineColor, const rgb24& fillColor);
     void fillScreen(const rgb24& color);
     void drawChar(int16_t x, int16_t y, const rgb24& charColor, char character);
+    void drawChar(int16_t x, int16_t y, const rgb24& charColor, char character, int16_t pxSize);
     void drawString(int16_t x, int16_t y, const rgb24& charColor, const char text[]);
+    void drawString(int16_t x, int16_t y, const rgb24& charColor, const char text[], int16_t pxSize);
     void drawString(int16_t x, int16_t y, const rgb24& charColor, const rgb24& backColor, const char text[]);
     void drawMonoBitmap(int16_t x, int16_t y, uint8_t width, uint8_t height, const rgb24& bitmapColor, const uint8_t *bitmap);
     const rgb24 readPixel(int16_t x, int16_t y) const;
