@@ -1,9 +1,3 @@
-[submodule "lib/SmartMatrix"]
-	path = lib/SmartMatrix
-	url = https://github.com/pixelmatix/SmartMatrix.git
 [submodule "Arduino-Makefile"]
 	path = Arduino-Makefile
 	url = https://github.com/WeAreLeka/Arduino-Makefile.git
-[submodule "lib/Bounce2"]
-	path = lib/Bounce2
-	url = https://github.com/thomasfredericks/Bounce2.git
