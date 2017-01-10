@@ -12,6 +12,8 @@ The sLap Counter is an intelligent, personal poolside lap counter with smartphon
 python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
 ```
 
+Then, restart your terminal.
+
 - Clone and enter repository
 
 ```bash
@@ -26,7 +28,7 @@ While you're in the slapcounter directory:
 platformio run -t upload
 ```
 
-The first upload may take a little bit longer as dependencies are installed or compiled.
+The first upload may take a little bit longer as dependencies are installed or compiled. You may also need to press the reset button on the Teensy while uploading.
 
 ## Updating sLapCounter software
 
