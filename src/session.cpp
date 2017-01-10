@@ -23,7 +23,7 @@ Session::Session(Scheduler* sched, SmartMatrix* matrix, Buttons* buttons, Storag
 	mode{Mode::ready} {}
 
 Session::~Session() {
-	sched->clearInterval(bpushTaskID);
+	stop();
 }
 
 void Session::begin() {
@@ -38,6 +38,11 @@ void Session::update(unsigned taskID) {
 		onSlap();
 	}
 	redraw();
+}
+
+void Session::stop() {
+	sched->clearInterval(bpushTaskID);
+	sched->clearInterval(timerTaskID);
 }
 
 uint16_t Session::millisToCentis(unsigned long millis) {

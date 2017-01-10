@@ -4,96 +4,34 @@ The sLap Counter is an intelligent, personal poolside lap counter with smartphon
 
 ## Installation
 
-### Getting Ready - The Toolbox
+1. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-#### OS X
+2. Install platformio (run in terminal)
 
-Before starting, please make sure you have those installed:
-
-*	[Arduino IDE 1.0.6](https://www.arduino.cc/en/Main/OldSoftwareReleases#previous) - Download the app from the website
-*	[Homebrew](http://mxcl.github.io/homebrew/) - Follow the instructions on their website
-*	[Git](http://git-scm.com/) - use `brew install git` to install the latest version
-*   [Teensyduino](https://www.pjrc.com/teensy/td_download.html) - follow the instructions for Arduino IDE 1.0.6
-
-#### Linux
-
-Before starting we need to install `git` and `arduino`:
-
-```Bash
-# First add the git-core ppa
-$ sudo add-apt-repository ppa:git-core/ppa
-
-# Update list
-$ sudo apt-get update && sudo apt-get upgrade
-
-# Install git 2.x.x and Arduino 1.0.x
-$ sudo apt-get install git arduino
+```bash
+python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
 ```
 
-### Install `avr-gcc`, `binutils`, `avr-libc` and `avrdude`
+3. Clone and enter repository
 
-#### OS X
-
-```Bash
-$ brew tap osx-cross/avr
-$ brew install avr-libc
-$ brew install avrdude
+```bash
+git clone https://github.com/alexozer/slapcounter.git && cd slapcounter`
 ```
 
-Check that everything has been installed properly by running `avr-gcc -v` and `avrdude -v`.
+## Uploading to sLapCounter
 
-#### Linux
+While you're in the slapcounter directory:
 
-```Bash
-$ sudo apt-get install gcc-avr binutils avr-libc avrdude
+```bash
+platformio run -t upload
 ```
 
-Make sure everything is up and running by running `avr-gcc -v` and `avrdude -v`.
+The first upload may take a little bit longer as dependencies are installed or compiled.
 
-### 2. Clone `slapcounter` repository from Github
+## Updating sLapCounter software
 
-Simply clone the repo:
+While you're in the slapcounter directory:
 
-```Bash
-$ git clone https://github.com/alexozer/slapcounter
-```
-
-Initialize and update submodules:
-
-```Bash
-$ cd slapcounter
-$ git submodule update --init --recursive
-```
-
-### Compile and upload code to your sLap Counter
-
-Copy the appropriate Makefile to your project dir:
-
-```Bash
-# if you are on OS X
-$ cp Makefile-OSX.mk src/Makefile
-
-# or if you're running Linux
-$ cp Makefile-Linux.mk src/Makefile
-```
-
-Then replace the PROJECT_DIR variable in the Makefile with the path of the project.
-This can be obtained by running:
-
-```Bash
-$ pwd
-```
-
-Then compile and upload your code to the sLap Counter:
-
-```Bash
-$ cd src
-$ make upload
-```
-
-### Updating sLap Counter software
-
-```Bash
-$ git pull
-$ make upload
+```bash
+git pull
 ```

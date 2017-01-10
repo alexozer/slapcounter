@@ -5,6 +5,8 @@
 #include "color.h"
 #include "bluetooth.h"
 #include "session.h"
+#include "cuauv.h"
+#include "mand.h"
 
 #include "SmartMatrix_32x32.h"
 #include <Arduino.h>
@@ -16,7 +18,7 @@ SmartMatrix matrix;
 
 void initMatrix() {
 	matrix.begin();
-	matrix.setBrightness(7);
+	matrix.setBrightness(15);
 }
 
 void wait() {
@@ -102,17 +104,50 @@ void testSession() {
 	Session session(&sched, &matrix, &buttons, nullptr);
 	session.begin();
 	Serial.println("initialized session");
-	while(true) { sched.iterate(); }
+	while(true) sched.iterate();
+}
+
+void testCuauv() {
+	Serial.println("testing cuauv");
+
+	Buttons buttons(&sched);
+	Session session(&sched, &matrix, &buttons, nullptr);
+	session.begin();
+	Cuauv cuauv(&sched, &matrix);
+	bool state = true;
+	while(true) {
+		sched.iterate();
+		if(buttons.wasPushed(1)) {
+			buttons.reset();
+			if(state) {
+				session.stop();
+				cuauv.begin();
+			} else {
+				cuauv.stop();
+				session.begin();
+			}
+			state = !state;
+		}
+	}
+}
+
+void testMand() {
+	Buttons buttons(&sched);
+	Mand mand(&sched, &matrix, &buttons);
+	mand.begin();
+	while(true) sched.iterate();
 }
 
 void runTests() {
 	Serial.begin(9600);
 	initMatrix();
-	//wait();
 
 	//blink();
 	//testButtons();
 	//testBluetooth();
 	//testBigFont();
+	//testFluid();
 	testSession();
+	//testCuauv();
+	//testMand();
 }

@@ -16,6 +16,7 @@ class Session : public Component {
 		
 		void begin();
 		void update(unsigned taskID) override;
+		void stop();
 
 	private:
 		Scheduler* sched;
