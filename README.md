@@ -4,15 +4,15 @@ The sLap Counter is an intelligent, personal poolside lap counter with smartphon
 
 ## Installation
 
-1. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-2. Install platformio (run in terminal)
+- Install platformio (run in terminal)
 
 ```bash
 python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
 ```
 
-3. Clone and enter repository
+- Clone and enter repository
 
 ```bash
 git clone https://github.com/alexozer/slapcounter.git && cd slapcounter`
