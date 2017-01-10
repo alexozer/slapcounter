@@ -9,13 +9,13 @@ The sLap Counter is an intelligent, personal poolside lap counter with smartphon
 - Install platformio (run in terminal)
 
 ```bash
-python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
+python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
 ```
 
 - Clone and enter repository
 
 ```bash
-git clone https://github.com/alexozer/slapcounter.git && cd slapcounter`
+git clone https://github.com/alexozer/slapcounter.git && cd slapcounter
 ```
 
 ## Uploading to sLapCounter
